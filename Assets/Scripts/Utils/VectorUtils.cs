@@ -1,7 +1,7 @@
-﻿namespace Assets.Scripts.Utils
-{
-    using UnityEngine;
+﻿using UnityEngine;
 
+namespace Assets.Scripts.Utils
+{
     public static class VectorUtils
     {
         public static float Angle(Vector2 vector)
