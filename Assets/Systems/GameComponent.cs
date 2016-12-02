@@ -5,7 +5,7 @@ namespace Assets.Systems
 {
     public class GameComponent : MonoBehaviour, IGameComponent
     {
-        private void Start()
+        protected void Start()
         {
             RegisterToGame();
         }

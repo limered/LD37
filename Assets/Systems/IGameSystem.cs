@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Assets.Systems
 {
     public interface IGameSystem
     {
         int Priority { get; }
-        List<IGameComponent> SystemComponents { get; }
+        List<Type> SystemComponents { get; }
         void Init();
         void RegisterComponent(IGameComponent component);
     }

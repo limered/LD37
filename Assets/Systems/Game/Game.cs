@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Assets.Scripts.Utils;
+using System;
 using System.Collections.Generic;
-using Assets.Scripts.Utils;
+using Assets.Systems.ChangeColorOnCollision;
+using UnityEngine;
 
 namespace Assets.Systems.Game
 {
-    public class Game : IGameSystem
+    public class Game : MonoBehaviour, IGameSystem
     {
         private readonly Dictionary<Type, List<IGameSystem>> _systemToComponentMapper = new Dictionary<Type, List<IGameSystem>>();
         private readonly List<IGameSystem> _gameSystems = new List<IGameSystem>();
 
         public int Priority { get { return -1; } }
-        public List<IGameComponent> SystemComponents { get { return null; } }
+        public List<Type> SystemComponents { get { return null; } }
 
         public void Init()
         {
@@ -28,9 +30,15 @@ namespace Assets.Systems.Game
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             IoC.RegisterSingleton(this);
+
+            #region System Registration
+
+            RegisterSystem(new ChangeColorOnCollisionSystem());
+
+            #endregion System Registration
 
             Init();
         }
@@ -46,20 +54,20 @@ namespace Assets.Systems.Game
 
             foreach (var system in _gameSystems)
             {
-                foreach (var component in system.SystemComponents)
+                foreach (var componentType in system.SystemComponents)
                 {
-                    MapSystemToComponent(system, component);
+                    MapSystemToComponent(system, componentType);
                 }
             }
         }
 
-        private void MapSystemToComponent(IGameSystem system, IGameComponent component)
+        private void MapSystemToComponent(IGameSystem system, Type componentType)
         {
-            if (!_systemToComponentMapper.ContainsKey(component.GetType()))
+            if (!_systemToComponentMapper.ContainsKey(componentType))
             {
-                _systemToComponentMapper.Add(component.GetType(), new List<IGameSystem>());
+                _systemToComponentMapper.Add(componentType, new List<IGameSystem>());
             }
-            _systemToComponentMapper[component.GetType()].Add(system);
+            _systemToComponentMapper[componentType].Add(system);
         }
     }
 }
