@@ -1,7 +1,7 @@
-﻿namespace Assets.Scripts.Utils
-{
-    using UnityEngine;
+﻿using UnityEngine;
 
+namespace Assets.Scripts.Utils
+{
     public static class InputExtensions
     {
         public static bool IsPressed(this string inputName)
