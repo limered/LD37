@@ -4,7 +4,7 @@ namespace Assets.Systems.ChangeColorOnCollision.Components
 {
     public class ChangeColorOnCollisionComponent : GameComponent
     {
-        public Color OldColor { get; set; }
+        public Color OriginalColor = default(Color);
         private new void Start()
         {
             base.Start();

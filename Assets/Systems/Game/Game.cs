@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Utils;
 using System;
 using System.Collections.Generic;
+using Assets.Systems.ChangeColorIIfTargetChangesColor;
 using Assets.Systems.ChangeColorOnCollision;
 using UnityEngine;
 
@@ -37,6 +38,7 @@ namespace Assets.Systems.Game
             #region System Registration
 
             RegisterSystem(new ChangeColorOnCollisionSystem());
+            RegisterSystem(new ChangeColorOnTargetSystem());
 
             #endregion System Registration
 

@@ -38,7 +38,7 @@ namespace Assets.Systems.ChangeColorOnCollision
             if (changeColorComp)
             {
                 changeColorComp
-                    .OnCollisionEnterAsObservable()
+                    .OnCollisionStayAsObservable()
                     .Subscribe(collision => ChangeColor(changeColorComp))
                     .AddTo(changeColorComp);
 
@@ -52,14 +52,13 @@ namespace Assets.Systems.ChangeColorOnCollision
         private void ChangeColor(ChangeColorOnCollisionComponent self)
         {
             var renderComponent = self.GetComponent<Renderer>();
-            self.OldColor = renderComponent.material.color;
             renderComponent.material.color = _color;
         }
 
         private void ChangeColorBack(ChangeColorOnCollisionComponent self)
         {
             var renderComponent = self.GetComponent<Renderer>();
-            renderComponent.material.color = self.OldColor;
+            renderComponent.material.color = self.OriginalColor;
         }
     }
 }
