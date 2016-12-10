@@ -2,6 +2,7 @@
 using Assets.Systems.EnemyMovementSystem;
 using System;
 using System.Collections.Generic;
+using Assets.Systems.DumbKISystem;
 using UnityEngine;
 
 namespace Assets.Systems.Game
@@ -37,6 +38,7 @@ namespace Assets.Systems.Game
             #region System Registration
 
             RegisterSystem(new EnemyMovement());
+            RegisterSystem(new DumbKi());
 
             #endregion System Registration
 
