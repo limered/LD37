@@ -3,6 +3,7 @@ using Assets.Systems.EnemyMovementSystem;
 using System;
 using System.Collections.Generic;
 using Assets.Systems.DumbKISystem;
+using Assets.Systems.EnemyDeathSystem;
 using UnityEngine;
 
 namespace Assets.Systems.Game
@@ -37,6 +38,7 @@ namespace Assets.Systems.Game
 
             #region System Registration
 
+            RegisterSystem(new EnemyDeath());
             RegisterSystem(new EnemyMovement());
             RegisterSystem(new DumbKi());
 
