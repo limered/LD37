@@ -33,5 +33,17 @@ namespace Assets.Scripts.Utils
 
             return angle * Mathf.Deg2Rad;
         }
+
+        public static Vector3 RandomVector(this Vector3 self)
+        {
+            return new Vector3(Random.value, Random.value, Random.value);
+        }
+        public static Vector3 RandomVector(this Vector3 self, Vector3 minVec, Vector3 maxVec)
+        {
+            return new Vector3(
+                Random.value * (maxVec.x-minVec.x) + minVec.x, 
+                Random.value * (maxVec.y - minVec.y) + minVec.y, 
+                Random.value * (maxVec.z - minVec.z) + minVec.z);
+        }
     }
 }
