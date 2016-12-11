@@ -18,7 +18,6 @@ namespace Assets.Scripts
                     var wall = hit.collider.GetComponent<RoomRotationWallComponent>();
                     if (wall)
                     {
-                        print("RotateToThis");
                         wall.RotateToThis();
                     }
                 }

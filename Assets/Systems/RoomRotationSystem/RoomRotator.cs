@@ -64,8 +64,6 @@ namespace Assets.Systems.RoomRotationSystem
         private void OnRotationRequested(RoomRotationWallComponent comp)
         {
             var worldPos = comp.transform.position - _room.transform.position;
-            var fwd = _room.transform.forward;
-            Debug.Log(string.Format("Wall world position: ({0}|{1}|{2})", fwd.x, fwd.y, fwd.z));
 
             var angle = 90;
             Vector3 axis;
@@ -118,7 +116,6 @@ namespace Assets.Systems.RoomRotationSystem
             {
                 return;
             }
-            Debug.Log(string.Format("rotate {3} ({0}|{1}|{2})", axis.x, axis.y, axis.z, angle));
             _room.AnimateRotation(axis, angle, _speed);
         }
     }
