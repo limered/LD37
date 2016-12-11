@@ -11,7 +11,7 @@ namespace Assets.Systems.RoomRotationSystem
     {
         private RotatableRoomComponent _room;
         private const float DeltaDistance = 5f;
-        private float _speed = 1;
+        private float _speed = 300;
 
         public int Priority
         {
