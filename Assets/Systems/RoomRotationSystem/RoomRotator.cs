@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Assets.Systems.RoomRotationSystem.Components;
+using UniRx;
 using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 using Random = System.Random;
 
 namespace Assets.Systems.RoomRotationSystem
@@ -12,6 +11,7 @@ namespace Assets.Systems.RoomRotationSystem
     {
         private RotatableRoomComponent _room;
         private const float DeltaDistance = 5f;
+        private float _speed = 1;
 
         public int Priority
         {
@@ -49,6 +49,15 @@ namespace Assets.Systems.RoomRotationSystem
             if (room)
             {
                 _room = room;
+            }
+
+            var config = component as RoomRotationConfig;
+            if (config)
+            {
+                config
+                    .Speed
+                    .Subscribe(f => _speed = f)
+                    .AddTo(config);
             }
         }
 
@@ -110,7 +119,7 @@ namespace Assets.Systems.RoomRotationSystem
                 return;
             }
             Debug.Log(string.Format("rotate {3} ({0}|{1}|{2})", axis.x, axis.y, axis.z, angle));
-            _room.AnimateRotation(axis, angle);
+            _room.AnimateRotation(axis, angle, _speed);
         }
     }
 }

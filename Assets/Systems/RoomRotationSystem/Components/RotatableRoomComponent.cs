@@ -5,16 +5,16 @@ namespace Assets.Systems.RoomRotationSystem.Components
 {
     public class RotatableRoomComponent : GameComponent
     {
-        public void AnimateRotation(Vector3 axis, int angle)
+        public void AnimateRotation(Vector3 axis, int angle, float speed)
         {
-            StartCoroutine(AnimateRotationRoutine(axis, angle));
+            StartCoroutine(AnimateRotationRoutine(axis, angle, speed));
         }
 
-        public IEnumerator AnimateRotationRoutine(Vector3 axis, int angle)
+        public IEnumerator AnimateRotationRoutine(Vector3 axis, int angle, float speed)
         {
-            for (var i = 0; i < angle; i++)
+            for (var i = 0f; i < angle*100; i+= speed)
             {
-                transform.RotateAround(transform.position, axis, 1);
+                transform.RotateAround(transform.position, axis, speed/100);
                 yield return null;
             }
         }
