@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Assets.Systems.EnemySpawnerSystem.Components;
 using UnityEngine;
 
 namespace Assets.Systems.UISystem.Components
@@ -11,9 +12,12 @@ namespace Assets.Systems.UISystem.Components
         public GameObject ButtonModel;
         public Light ButtonLight;
 
+        public SpawnerComponent SpawnerToActivate;
+
         public void StartGame()
         {
             StartCoroutine(ToggleStartButton(false));
+            SpawnerToActivate.IsActive = true;
         }
 
         public void EndGame()
