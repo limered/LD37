@@ -70,8 +70,11 @@ namespace Assets.Systems.EnemySpawnerSystem
             var axis = Random.value < 0.5f ? new Vector3(1, 0, 0) : new Vector3(0, 0, 1);
             var angle = ((int)(Random.value*720)/90) * 90;
             var enemyObject = GameObject.Instantiate(enemy, pos, Quaternion.AngleAxis(angle, axis));
-            if(parent)
+            if (parent)
+            {
                 enemyObject.transform.parent = parent.transform;
+                enemyObject.transform.localRotation = Quaternion.AngleAxis(angle, axis);
+            }
         }
     }
 }
