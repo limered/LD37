@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Assets.Systems.DumbKISystem;
 using Assets.Systems.RoomRotationSystem;
 using Assets.Systems.EnemyDeathSystem;
+using Assets.Systems.EnemySpawnerSystem;
 using UnityEngine;
 
 namespace Assets.Systems.Game
@@ -43,6 +44,7 @@ namespace Assets.Systems.Game
             RegisterSystem(new EnemyMovement());
             RegisterSystem(new DumbKi());
             RegisterSystem(new RoomRotator());
+            RegisterSystem(new EnemySpawner());
 
             #endregion System Registration
 
