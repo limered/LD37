@@ -53,13 +53,14 @@ namespace Assets.Systems.EnemySpawnerSystem
             var coll = comp.GetComponent<BoxCollider>();
             var areaToSpawn = new Bounds(comp.transform.position, coll.size);
 
-            var enemiesToSpawn = Math.Min(comp.SpawnCountPerTick, comp.MaxEnemiesToSpawn);
-            comp.MaxEnemiesToSpawn -= enemiesToSpawn;
+            var enemiesToSpawn = (comp.InFiniteSpawn) ? comp.SpawnCountPerTick : Math.Min(comp.SpawnCountPerTick, comp.MaxEnemiesToSpawn);
+            if(!comp.InFiniteSpawn)
+                comp.MaxEnemiesToSpawn -= enemiesToSpawn;
 
             Observable.Range(0, enemiesToSpawn)
                 .Subscribe(_ => SpawnEnemy(comp.EnemyToSpawn, comp.Parent, areaToSpawn));
 
-            if(comp.MaxEnemiesToSpawn == 0)
+            if(comp.MaxEnemiesToSpawn == 0 && !comp.InFiniteSpawn)
                 GameObject.Destroy(comp.gameObject);
         }
 
