@@ -11,6 +11,7 @@ using Assets.Systems.GameCommands;
 using Assets.Systems.GameControl;
 using Assets.Systems.HealthSystem;
 using Assets.Systems.LightControl;
+using Assets.Systems.Point;
 using Assets.Systems.UISystem;
 using UnityEngine;
 
@@ -57,6 +58,7 @@ namespace Assets.Systems.Game
             RegisterSystem(new EnemySpawner());
             RegisterSystem(new UserInteractionSystem());
             RegisterSystem(new LightControlSystem());
+            RegisterSystem(new PointsSystem());
 
             #endregion System Registration
 

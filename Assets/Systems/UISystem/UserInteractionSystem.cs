@@ -1,7 +1,10 @@
-﻿using Assets.Systems.UISystem.Components;
+﻿using Assets.Systems.GameControl;
+using Assets.Systems.HealthSystem.Components;
+using Assets.Systems.Point;
+using Assets.Systems.UISystem.Components;
 using System;
 using System.Collections.Generic;
-using Assets.Systems.GameControl;
+using System.Globalization;
 using UniRx;
 using UniRx.Triggers;
 
@@ -18,7 +21,20 @@ namespace Assets.Systems.UISystem
         #region Public Properties
 
         public int Priority { get { return 15; } }
-        public List<Type> SystemComponents { get { return new List<Type> { typeof(UISystemConfig), typeof(UiTriggerComponent) }; } }
+
+        public List<Type> SystemComponents
+        {
+            get
+            {
+                return new List<Type>
+                {
+                    typeof(UISystemConfig),
+                    typeof(UiTriggerComponent),
+                    typeof(HealthComponent),
+                    typeof(PointsHelper)
+                };
+            }
+        }
 
         #endregion Public Properties
 
@@ -32,13 +48,35 @@ namespace Assets.Systems.UISystem
         {
             RegisterComponent(component as UiTriggerComponent);
             RegisterComponent(component as UISystemConfig);
+            RegisterComponent(component as HealthComponent);
+            RegisterComponent(component as PointsHelper);
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
+        private void RegisterComponent(HealthComponent health)
+        {
+            if (health && health.tag == "Player")
+            {
+                health.CurrentHealth
+                    .Skip(1)
+                    .Subscribe(f => _config.HealthText.text = f.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        private void RegisterComponent(PointsHelper helper)
+        {
+            if (helper)
+            {
+                helper.Points
+                    .Subscribe(f => _config.PointsText.text = Math.Floor(f).ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
         private void RegisterComponent(UISystemConfig config)
+
         {
             if (!config) return;
             _config = config;
@@ -59,9 +97,9 @@ namespace Assets.Systems.UISystem
 
         private void ToggleUseMessage(bool isOn)
         {
-            if(GameControlSystem.GameMode == GameMode.StartSequence)
+            if (GameControlSystem.GameMode == GameMode.StartSequence)
                 _config.StartCanvas.enabled = isOn;
-            if(GameControlSystem.GameMode == GameMode.End)
+            if (GameControlSystem.GameMode == GameMode.End)
                 _config.EndCanvas.enabled = isOn;
         }
 
