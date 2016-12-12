@@ -1,11 +1,11 @@
 ﻿using Assets.Systems.GameControl;
+using Assets.Systems.GameControl.Components;
 using Assets.Systems.HealthSystem.Components;
 using Assets.Systems.Point;
 using Assets.Systems.UISystem.Components;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Assets.Systems.GameControl.Components;
 using UniRx;
 using UniRx.Triggers;
 
@@ -47,33 +47,15 @@ namespace Assets.Systems.UISystem
 
         public void RegisterComponent(IGameComponent component)
         {
-            RegisterComponent(component as UiTriggerComponent);
             RegisterComponent(component as UISystemConfig);
+            RegisterComponent(component as UiTriggerComponent);
             RegisterComponent(component as HealthComponent);
             RegisterComponent(component as PointsHelper);
-            RegisterComponent(component as GameControlHelper);
         }
 
         #endregion Public Methods
 
         #region Private Methods
-
-        private void RegisterComponent(GameControlHelper helper)
-        {
-            if (helper)
-            {
-                helper.GameMode
-                    .Where(mode => mode == GameMode.Running)
-                    .Subscribe(mode => HideAllMessages())
-                    .AddTo(helper);
-            }
-        }
-
-        private void HideAllMessages()
-        {
-            _config.StartCanvas.enabled = false;
-            _config.EndCanvas.enabled = false;
-        }
 
         private void RegisterComponent(HealthComponent health)
         {
@@ -87,7 +69,7 @@ namespace Assets.Systems.UISystem
 
         private void RegisterComponent(PointsHelper helper)
         {
-            if (helper && _config)
+            if (helper)
             {
                 helper.Points
                     .Subscribe(f => _config.PointsText.text = Math.Floor(f).ToString(CultureInfo.InvariantCulture));
@@ -117,9 +99,14 @@ namespace Assets.Systems.UISystem
         private void ToggleUseMessage(bool isOn)
         {
             if (GameControlSystem.GameMode == GameMode.StartSequence)
-                _config.StartCanvas.enabled = isOn;
-            if (GameControlSystem.GameMode == GameMode.End)
-                _config.EndCanvas.enabled = isOn;
+            { _config.StartCanvas.enabled = isOn; }
+            else if (GameControlSystem.GameMode == GameMode.End)
+            { _config.EndCanvas.enabled = isOn; }
+            else if (GameControlSystem.GameMode == GameMode.Running)
+            {
+                _config.EndCanvas.enabled = false;
+                _config.StartCanvas.enabled = false;
+            }
         }
 
         #endregion Private Methods
