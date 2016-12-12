@@ -1,8 +1,11 @@
-﻿using Assets.Systems.GameControl.Components;
+﻿using Assets.Systems.EnemySpawnerSystem.Components;
+using Assets.Systems.GameControl.Components;
 using Assets.Systems.GameControl.EventArgs;
+using Assets.Systems.HealthSystem.Events;
 using System;
 using System.Collections.Generic;
 using UniRx;
+using UnityEngine;
 
 namespace Assets.Systems.GameControl
 {
@@ -15,7 +18,7 @@ namespace Assets.Systems.GameControl
     {
         #region Private Fields
 
-        private GameMode _gameMode = GameMode.StartSequence;
+        public static GameMode GameMode = GameMode.StartSequence;
         private GameControlHelper _helper;
 
         #endregion Private Fields
@@ -33,6 +36,22 @@ namespace Assets.Systems.GameControl
         {
             MessageBroker.Default.Receive<GameStartArgs>().Subscribe(StartGame);
             MessageBroker.Default.Receive<GameCloseArgs>().Subscribe(CloseGame);
+            MessageBroker.Default.Receive<DiedArgs>().Subscribe(SomebodyDied);
+        }
+
+        private void SomebodyDied(DiedArgs diedArgs)
+        {
+            if (diedArgs.Comp.tag == "Player")
+            {
+                GameMode = GameMode.End;
+                _helper.GameMode.Value = GameMode.End;
+                DeactivateStages();
+            }
+        }
+
+        private void DeactivateStages()
+        {
+            ChangeSpanerState(_helper.Statge0, false);
         }
 
         public void RegisterComponent(IGameComponent component)
@@ -57,11 +76,20 @@ namespace Assets.Systems.GameControl
 
         private void StartGame(GameStartArgs gameStartArgs)
         {
-            if (_gameMode != GameMode.StartSequence) return;
+            if (GameMode != GameMode.StartSequence && GameMode != GameMode.End) return;
 
-            _gameMode = GameMode.Running;
-            _helper.GameMode.Value = _gameMode;
-            _helper.Statge0.SetActive(true);
+            GameMode = GameMode.Running;
+            _helper.GameMode.Value = GameMode;
+            ChangeSpanerState(_helper.Statge0, true);
+        }
+
+        private void ChangeSpanerState(GameObject parent, bool state)
+        {
+            var spawners = parent.GetComponentsInChildren<SpawnerComponent>();
+            foreach (var spawner in spawners)
+            {
+                spawner.IsActive = state;
+            }
         }
 
         #endregion Private Methods

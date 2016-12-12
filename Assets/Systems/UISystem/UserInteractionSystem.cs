@@ -1,6 +1,7 @@
 ﻿using Assets.Systems.UISystem.Components;
 using System;
 using System.Collections.Generic;
+using Assets.Systems.GameControl;
 using UniRx;
 using UniRx.Triggers;
 
@@ -58,7 +59,10 @@ namespace Assets.Systems.UISystem
 
         private void ToggleUseMessage(bool isOn)
         {
-            _config.StartCanvas.enabled = isOn;
+            if(GameControlSystem.GameMode == GameMode.StartSequence)
+                _config.StartCanvas.enabled = isOn;
+            if(GameControlSystem.GameMode == GameMode.End)
+                _config.EndCanvas.enabled = isOn;
         }
 
         #endregion Private Methods

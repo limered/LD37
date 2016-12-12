@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.Utils;
+using Assets.Systems.GameControl;
+using Assets.Systems.GameControl.Components;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -19,7 +21,8 @@ namespace Assets.Systems.EnemySpawnerSystem
             {
                 return new List<Type>
                 {
-                    typeof(SpawnerComponent)
+                    typeof(SpawnerComponent),
+                    typeof(GameControlHelper)
                 };
             }
         }
@@ -30,14 +33,35 @@ namespace Assets.Systems.EnemySpawnerSystem
 
         public void RegisterComponent(IGameComponent component)
         {
-            var comp = component as SpawnerComponent;
-            if (comp)
-            {
-                comp.FixedUpdateAsObservable()
+            RegisterComponent(component as SpawnerComponent);
+            RegisterComponent(component as GameControlHelper);
+        }
+
+        private void RegisterComponent(SpawnerComponent comp)
+        {
+            if (!comp) return;
+            comp.FixedUpdateAsObservable()
                     .Where(_ => comp.IsActive)
                     .Where(_ => CheckForSpawn(comp))
                     .Subscribe(_ => SpawnEnemies(comp))
                     .AddTo(comp);
+        }
+
+        private void RegisterComponent(GameControlHelper helper)
+        {
+            if (!helper) return;
+            helper.GameMode
+                .Where(mode => mode == GameMode.End)
+                .Subscribe(ResetAllEnemies)
+                .AddTo(helper);
+        }
+
+        private void ResetAllEnemies(GameMode gameMode)
+        {
+            var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (var enemy in enemies)
+            {
+                GameObject.Destroy(enemy);
             }
         }
 
