@@ -11,6 +11,7 @@ namespace Assets.Systems.LightControl.Components
     {
         public List<Light> MainLights;
         public Light StartLight;
+        public float LightIntensity;
 
         public int ChangeDurationMain = 120;
         public int ChangeDurationSingle = 120;
@@ -42,13 +43,13 @@ namespace Assets.Systems.LightControl.Components
             {
                 if (turnOn)
                 {
-                    if(MainLights.All(currLight => currLight.intensity < 1f))
-                        MainLights.ForEach(currLight => currLight.intensity = (1f/ChangeDurationMain*i));
+                    if(MainLights.All(currLight => currLight.intensity < LightIntensity))
+                        MainLights.ForEach(currLight => currLight.intensity = (LightIntensity / ChangeDurationMain*i));
                 }
                 else
                 {
                     if (MainLights.All(currLight => currLight.intensity > 0))
-                        MainLights.ForEach(currLight => currLight.intensity = 1f - (1f / ChangeDurationMain * i));
+                        MainLights.ForEach(currLight => currLight.intensity = LightIntensity - (LightIntensity / ChangeDurationMain * i));
                 }
                 yield return null;
             }
