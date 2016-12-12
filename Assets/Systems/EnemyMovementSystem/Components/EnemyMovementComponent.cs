@@ -1,5 +1,4 @@
 ﻿using UniRx;
-using UnityEditor;
 
 namespace Assets.Systems.EnemyMovementSystem.Components
 {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Assets.Systems.DamagingSystem.Components
+﻿namespace Assets.Systems.DamagingSystem.Components
 {
-    class DealDamageComponent:GameComponent
+    internal class DealDamageComponent : GameComponent
     {
         public float DamageToHealth;
     }
