@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UniRx;
+﻿using UniRx;
 
 namespace Assets.Systems.HealthSystem.Components
 {
-    class HealthComponent : GameComponent
+    public class HealthComponent : GameComponent
     {
-        public float MaxHealth;
+        public float MaxHealth = 100;
         public FloatReactiveProperty CurrentHealth = new FloatReactiveProperty();
     }
 }

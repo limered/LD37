@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Systems.GameControl.Components;
 using Assets.Systems.RoomRotationSystem.Components;
 using Assets.Systems.RoomRotationSystem.Events;
 using UniRx;
@@ -27,7 +28,8 @@ namespace Assets.Systems.RoomRotationSystem
                 {
                     typeof(RoomRotationConfig),
                     typeof(RoomRotationWallComponent),
-                    typeof(RotatableRoomComponent)
+                    typeof(RotatableRoomComponent),
+                    typeof(GameControlHelper)
                 };
             }
         }
@@ -44,28 +46,43 @@ namespace Assets.Systems.RoomRotationSystem
 
         public void RegisterComponent(IGameComponent component)
         {
-            var comp = component as RoomRotationWallComponent;
-            if (comp)
-            {
-                comp.OnRotationRequested += OnRotationRequested;
-                return;
-            }
+            
+            RegisterComponent(component as RoomRotationWallComponent);
+            RegisterComponent(component as RotatableRoomComponent);
+            RegisterComponent(component as RoomRotationConfig);
+            RegisterComponent(component as GameControlHelper);
+        }
 
-            var room = component as RotatableRoomComponent;
-            if (room)
-            {
-                _room = room;
-            }
+        private void RegisterComponent(RoomRotationWallComponent comp)
+        {
+            if(comp) comp.OnRotationRequested += OnRotationRequested;
+        }
 
-            var config = component as RoomRotationConfig;
-            if (config)
-            {
-                config
+        private void RegisterComponent(RotatableRoomComponent comp)
+        {
+            if (comp) _room = comp;
+        }
+
+        private void RegisterComponent(RoomRotationConfig comp)
+        {
+            if (comp) {
+                comp
                     .Speed
                     .Subscribe(f => _speed = f)
-                    .AddTo(config);
+                    .AddTo(comp);
             }
         }
+
+        private void RegisterComponent(GameControlHelper comp)
+        {
+            if (comp)
+            {
+                comp.GameMode
+                    .Skip(1)
+                    .Subscribe(_ => _room.transform.localRotation = Quaternion.identity);
+            }
+        }
+
 
         private void OnRotationRequested(RoomRotationWallComponent comp)
         {
