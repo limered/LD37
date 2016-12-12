@@ -1,25 +1,27 @@
 ﻿using Assets.Systems.UISystem.Components;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Utils;
 using UniRx;
 using UniRx.Triggers;
-using UnityEngine;
 
 namespace Assets.Systems.UISystem
 {
-    enum GameMode
+    internal class UserInteractionSystem : IGameSystem
     {
-        Start, Running, End
-    }
-    internal class UserInteractionSystem : MonoBehaviour, IGameSystem
-    {
+        #region Private Fields
+
         private UISystemConfig _config;
 
-        private GameMode _mode = GameMode.Start;
+        #endregion Private Fields
+
+        #region Public Properties
+
         public int Priority { get { return 15; } }
-        public List<Type> SystemComponents { get { return new List<Type> {typeof(UISystemConfig), typeof(UiTriggerComponent)}; } }
+        public List<Type> SystemComponents { get { return new List<Type> { typeof(UISystemConfig), typeof(UiTriggerComponent) }; } }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public void Init()
         {
@@ -27,34 +29,31 @@ namespace Assets.Systems.UISystem
 
         public void RegisterComponent(IGameComponent component)
         {
-            var uiTrigger = component as UiTriggerComponent;
-            if (uiTrigger)
-            {
-                uiTrigger
-                    .OnTriggerEnterAsObservable()
-                    .Subscribe(_ => ToggleUseMessage(true))
-                    .AddTo(uiTrigger);
-                uiTrigger
-                    .OnTriggerExitAsObservable()
-                    .Subscribe(_ => ToggleUseMessage(false))
-                    .AddTo(uiTrigger);
-                uiTrigger
-                    .UpdateAsObservable()
-                    .Where(_ => _mode == GameMode.Start)
-                    .Subscribe(_ => ListenToPressE())
-                    .AddTo(uiTrigger);
-                return;
-            }
-            var config = component as UISystemConfig;
-            if (config)
-            {
-                _config = config;
-                _config
-                    .UpdateAsObservable()
-                    .Subscribe(_ => ListenForEsc())
-                    .AddTo(_config);
-                return;
-            }
+            RegisterComponent(component as UiTriggerComponent);
+            RegisterComponent(component as UISystemConfig);
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void RegisterComponent(UISystemConfig config)
+        {
+            if (!config) return;
+            _config = config;
+        }
+
+        private void RegisterComponent(UiTriggerComponent uiTrigger)
+        {
+            if (!uiTrigger) return;
+            uiTrigger
+                .OnTriggerEnterAsObservable()
+                .Subscribe(_ => ToggleUseMessage(true))
+                .AddTo(uiTrigger);
+            uiTrigger
+                .OnTriggerExitAsObservable()
+                .Subscribe(_ => ToggleUseMessage(false))
+                .AddTo(uiTrigger);
         }
 
         private void ToggleUseMessage(bool isOn)
@@ -62,22 +61,6 @@ namespace Assets.Systems.UISystem
             _config.StartCanvas.enabled = isOn;
         }
 
-        private void ListenToPressE()
-        {
-            if (KeyCode.E.WasPressed())
-            {
-                _mode = GameMode.Running;
-                _config.StartGame();
-            }
-        }
-
-        private void ListenForEsc()
-        {
-            if (KeyCode.Escape.WasPressed())
-            {
-                Application.Quit();
-            }
-        }
-        
+        #endregion Private Methods
     }
 }

@@ -13,7 +13,6 @@ namespace Assets.Systems.HealthSystem
         public List<Type> SystemComponents { get {return new List<Type> {typeof(HealthComponent)};} }
         public void Init()
         {
-            throw new NotImplementedException();
         }
 
         public void RegisterComponent(IGameComponent component)

@@ -33,7 +33,6 @@ namespace Assets.Systems.RoomRotationSystem
 
         public void Init()
         {
-            throw new NotImplementedException();
         }
 
         public void RegisterComponent(IGameComponent component)

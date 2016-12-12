@@ -74,6 +74,8 @@ namespace Assets.Systems.Game
                 {
                     MapSystemToComponent(system, componentType);
                 }
+
+                system.Init();
             }
         }
 
