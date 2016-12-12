@@ -10,7 +10,7 @@ namespace Assets.Systems.EnemyMovementSystem
     public class EnemyMovement : IGameSystem
     {
         private float _speed = 500f;
-        private string _wallTag = "Stone";
+        private string _wallTag = "World";
         public int Priority { get { return 10; } }
 
         public List<Type> SystemComponents
