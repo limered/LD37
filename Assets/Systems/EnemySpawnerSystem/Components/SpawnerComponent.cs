@@ -14,5 +14,6 @@ namespace Assets.Systems.EnemySpawnerSystem.Components
         public int SpawnCountPerTick;
         public float SpawnInterval;
         public float SpawnTimer { get; set; }
+        public int EnemiesLeft { get; set; }
     }
 }
