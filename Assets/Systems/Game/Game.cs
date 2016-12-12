@@ -2,6 +2,7 @@
 using Assets.Systems.EnemyMovementSystem;
 using System;
 using System.Collections.Generic;
+using Assets.Systems.ButtonAnimation;
 using Assets.Systems.DamagingSystem;
 using Assets.Systems.DumbKISystem;
 using Assets.Systems.RoomRotationSystem;
@@ -59,6 +60,7 @@ namespace Assets.Systems.Game
             RegisterSystem(new UserInteractionSystem());
             RegisterSystem(new LightControlSystem());
             RegisterSystem(new PointsSystem());
+            RegisterSystem(new ButtonAnimationSystem());
 
             #endregion System Registration
 
