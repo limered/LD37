@@ -10,6 +10,7 @@ using Assets.Systems.EnemySpawnerSystem;
 using Assets.Systems.GameCommands;
 using Assets.Systems.GameControl;
 using Assets.Systems.HealthSystem;
+using Assets.Systems.LightControl;
 using Assets.Systems.UISystem;
 using UnityEngine;
 
@@ -55,6 +56,7 @@ namespace Assets.Systems.Game
             RegisterSystem(new RoomRotator());
             RegisterSystem(new EnemySpawner());
             RegisterSystem(new UserInteractionSystem());
+            RegisterSystem(new LightControlSystem());
 
             #endregion System Registration
 
