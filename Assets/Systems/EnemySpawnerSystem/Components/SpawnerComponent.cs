@@ -10,6 +10,7 @@ namespace Assets.Systems.EnemySpawnerSystem.Components
         public GameObject EnemyToSpawn;
 
         public int MaxEnemiesToSpawn;
+        public bool InFiniteSpawn;
         public int SpawnCountPerTick;
         public float SpawnInterval;
         public float SpawnTimer { get; set; }
