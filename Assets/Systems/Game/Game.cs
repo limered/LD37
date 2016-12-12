@@ -1,8 +1,19 @@
 ﻿using Assets.Scripts.Utils;
+using Assets.Systems.EnemyMovementSystem;
 using System;
 using System.Collections.Generic;
-using Assets.Systems.ChangeColorIIfTargetChangesColor;
-using Assets.Systems.ChangeColorOnCollision;
+using Assets.Systems.ButtonAnimation;
+using Assets.Systems.DamagingSystem;
+using Assets.Systems.DumbKISystem;
+using Assets.Systems.RoomRotationSystem;
+using Assets.Systems.EnemyDeathSystem;
+using Assets.Systems.EnemySpawnerSystem;
+using Assets.Systems.GameCommands;
+using Assets.Systems.GameControl;
+using Assets.Systems.HealthSystem;
+using Assets.Systems.LightControl;
+using Assets.Systems.Point;
+using Assets.Systems.UISystem;
 using UnityEngine;
 
 namespace Assets.Systems.Game
@@ -37,8 +48,19 @@ namespace Assets.Systems.Game
 
             #region System Registration
 
-            RegisterSystem(new ChangeColorOnCollisionSystem());
-            RegisterSystem(new ChangeColorOnTargetSystem());
+            RegisterSystem(new GameControlSystem());
+            RegisterSystem(new GameCommandsSystem());
+            RegisterSystem(new HealthManager());
+            RegisterSystem(new DamageSystem());
+            RegisterSystem(new EnemyDeath());
+            RegisterSystem(new EnemyMovement());
+            RegisterSystem(new DumbKi());
+            RegisterSystem(new RoomRotator());
+            RegisterSystem(new EnemySpawner());
+            RegisterSystem(new UserInteractionSystem());
+            RegisterSystem(new LightControlSystem());
+            RegisterSystem(new PointsSystem());
+            RegisterSystem(new ButtonAnimationSystem());
 
             #endregion System Registration
 
@@ -60,6 +82,8 @@ namespace Assets.Systems.Game
                 {
                     MapSystemToComponent(system, componentType);
                 }
+
+                system.Init();
             }
         }
 
