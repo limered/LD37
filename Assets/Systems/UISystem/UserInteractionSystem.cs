@@ -72,6 +72,7 @@ namespace Assets.Systems.UISystem
             if (helper)
             {
                 helper.Points
+                    .Skip(1)
                     .Subscribe(f => _config.PointsText.text = Math.Floor(f).ToString(CultureInfo.InvariantCulture));
             }
         }
