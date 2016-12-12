@@ -43,6 +43,7 @@ namespace Assets.Systems.UISystem
 
         public void Init()
         {
+            MessageBroker.Default.Receive<FlashArgs>().Subscribe(_ => _config.FlashImage());
         }
 
         public void RegisterComponent(IGameComponent component)

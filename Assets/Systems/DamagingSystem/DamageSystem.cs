@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Systems.DamagingSystem.Components;
 using Assets.Systems.HealthSystem.Components;
+using Assets.Systems.UISystem;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -46,6 +47,7 @@ namespace Assets.Systems.DamagingSystem
             direction *= self.PushForceStrength;
             body.AddForce(direction);
 
+            MessageBroker.Default.Publish(new FlashArgs());
         }
     }
 }
