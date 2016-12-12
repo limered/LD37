@@ -45,6 +45,7 @@ namespace Assets.Systems.EnemySpawnerSystem
                     .Where(_ => CheckForSpawn(comp))
                     .Subscribe(_ => SpawnEnemies(comp))
                     .AddTo(comp);
+            comp.EnemiesLeft = comp.MaxEnemiesToSpawn;
         }
 
         private void RegisterComponent(GameControlHelper helper)
@@ -77,15 +78,19 @@ namespace Assets.Systems.EnemySpawnerSystem
             var coll = comp.GetComponent<BoxCollider>();
             var areaToSpawn = new Bounds(comp.transform.position, coll.size);
 
-            var enemiesToSpawn = (comp.InFiniteSpawn) ? comp.SpawnCountPerTick : Math.Min(comp.SpawnCountPerTick, comp.MaxEnemiesToSpawn);
+            var enemiesToSpawn = (comp.InFiniteSpawn) ? comp.SpawnCountPerTick : Math.Min(comp.SpawnCountPerTick, comp.EnemiesLeft);
             if(!comp.InFiniteSpawn)
-                comp.MaxEnemiesToSpawn -= enemiesToSpawn;
+                comp.EnemiesLeft -= enemiesToSpawn;
 
             Observable.Range(0, enemiesToSpawn)
                 .Subscribe(_ => SpawnEnemy(comp.EnemyToSpawn, comp.Parent, areaToSpawn));
 
-            if(comp.MaxEnemiesToSpawn == 0 && !comp.InFiniteSpawn)
-                GameObject.Destroy(comp.gameObject);
+            if (comp.EnemiesLeft == 0 && !comp.InFiniteSpawn)
+            {
+                comp.IsActive = false;
+                comp.EnemiesLeft = comp.MaxEnemiesToSpawn;
+            }
+                
         }
 
         private void SpawnEnemy(GameObject enemy, GameObject parent, Bounds area)

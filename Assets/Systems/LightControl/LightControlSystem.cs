@@ -77,7 +77,8 @@ namespace Assets.Systems.LightControl
 
         private void SwitchToSingle(GameMode mode)
         {
-            _helper.GoToMode(LightMode.Single);
+            if(_helper)
+                _helper.GoToMode(LightMode.Single);
         }
 
         #endregion Private Methods
