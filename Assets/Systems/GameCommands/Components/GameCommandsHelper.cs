@@ -6,5 +6,6 @@ namespace Assets.Systems.GameCommands.Components
     {
         public KeyCode EndGameButton;
         public KeyCode StartGameButton;
+        public KeyCode ResetRoomButton;
     }
 }

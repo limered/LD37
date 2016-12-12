@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Systems.RoomRotationSystem.Components;
+using Assets.Systems.RoomRotationSystem.Events;
 using UniRx;
 using UnityEngine;
 using Random = System.Random;
@@ -33,6 +34,12 @@ namespace Assets.Systems.RoomRotationSystem
 
         public void Init()
         {
+            MessageBroker.Default.Receive<RoomRotationResetArgs>().Subscribe(ResetRoomRotation);
+        }
+
+        private void ResetRoomRotation(RoomRotationResetArgs roomRotationResetArgs)
+        {
+            _room.transform.localRotation = Quaternion.identity;
         }
 
         public void RegisterComponent(IGameComponent component)

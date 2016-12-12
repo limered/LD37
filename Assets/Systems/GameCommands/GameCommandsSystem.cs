@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Assets.Systems.GameControl.EventArgs;
+using Assets.Systems.RoomRotationSystem.Events;
 using UniRx;
 using UniRx.Triggers;
 
@@ -39,6 +40,8 @@ namespace Assets.Systems.GameCommands
                 MessageBroker.Default.Publish(new GameCloseArgs());
             if (helper.StartGameButton.WasPressed())
                 MessageBroker.Default.Publish(new GameStartArgs());
+            if(helper.ResetRoomButton.WasPressed())
+                MessageBroker.Default.Publish(new RoomRotationResetArgs());
         }
     }
 }
