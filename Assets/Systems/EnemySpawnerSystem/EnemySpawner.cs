@@ -64,6 +64,12 @@ namespace Assets.Systems.EnemySpawnerSystem
             {
                 GameObject.Destroy(enemy);
             }
+
+            var spawner = GameObject.FindGameObjectsWithTag("Spawner");
+            foreach (var spawn in spawner)
+            {
+                spawn.GetComponent<SpawnerComponent>().IsActive = false;
+            }
         }
 
         private bool CheckForSpawn(SpawnerComponent comp)
