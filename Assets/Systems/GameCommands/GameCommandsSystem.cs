@@ -3,16 +3,20 @@ using Assets.Systems.GameCommands.Components;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Assets.Systems.GameControl.EventArgs;
+using UniRx;
+using UniRx.Triggers;
 
 namespace Assets.Systems.GameCommands
 {
     public class GameCommandsSystem : IGameSystem
     {
-        public int Priority { get { return 1; } }
+        public int Priority { get { return 2; } }
         public List<Type> SystemComponents { get { return new List<Type> { typeof(GameCommandsHelper) }; } }
 
         public void Init()
         {
+            Debug.WriteLine("test");
         }
 
         public void RegisterComponent(IGameComponent component)
@@ -23,10 +27,18 @@ namespace Assets.Systems.GameCommands
         public void RegisterComponent(GameCommandsHelper helper)
         {
             if (!helper) return;
+            helper.UpdateAsObservable()
+                .Subscribe(_=>CheckForButtons(helper))
+                .AddTo(helper);
+            
+        }
+
+        private void CheckForButtons(GameCommandsHelper helper)
+        {
             if (helper.EndGameButton.WasPressed())
-                Debug.WriteLine("Close game");
+                MessageBroker.Default.Publish(new GameCloseArgs());
             if (helper.StartGameButton.WasPressed())
-                Debug.WriteLine("Start game");
+                MessageBroker.Default.Publish(new GameStartArgs());
         }
     }
 }

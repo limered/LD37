@@ -8,6 +8,7 @@ using Assets.Systems.RoomRotationSystem;
 using Assets.Systems.EnemyDeathSystem;
 using Assets.Systems.EnemySpawnerSystem;
 using Assets.Systems.GameCommands;
+using Assets.Systems.GameControl;
 using Assets.Systems.HealthSystem;
 using Assets.Systems.UISystem;
 using UnityEngine;
@@ -44,6 +45,7 @@ namespace Assets.Systems.Game
 
             #region System Registration
 
+            RegisterSystem(new GameControlSystem());
             RegisterSystem(new GameCommandsSystem());
             RegisterSystem(new HealthManager());
             RegisterSystem(new DamageSystem());
@@ -74,6 +76,8 @@ namespace Assets.Systems.Game
                 {
                     MapSystemToComponent(system, componentType);
                 }
+
+                system.Init();
             }
         }
 

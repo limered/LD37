@@ -16,7 +16,6 @@ namespace Assets.Systems.DamagingSystem
         public List<Type> SystemComponents { get {return new List<Type> {typeof(DealDamageComponent)};} }
         public void Init()
         {
-            throw new NotImplementedException();
         }
 
         public void RegisterComponent(IGameComponent component)

@@ -26,7 +26,6 @@ namespace Assets.Systems.EnemyDeathSystem
 
         public void Init()
         {
-            throw new NotImplementedException();
         }
 
         public void RegisterComponent(IGameComponent component)
