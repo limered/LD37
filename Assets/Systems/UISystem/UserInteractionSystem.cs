@@ -1,7 +1,10 @@
 ﻿using Assets.Systems.UISystem.Components;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Assets.Systems.GameControl;
+using Assets.Systems.GameControl.Components;
+using Assets.Systems.HealthSystem.Components;
 using UniRx;
 using UniRx.Triggers;
 
@@ -18,7 +21,7 @@ namespace Assets.Systems.UISystem
         #region Public Properties
 
         public int Priority { get { return 15; } }
-        public List<Type> SystemComponents { get { return new List<Type> { typeof(UISystemConfig), typeof(UiTriggerComponent) }; } }
+        public List<Type> SystemComponents { get { return new List<Type> { typeof(UISystemConfig), typeof(UiTriggerComponent), typeof(HealthComponent) }; } }
 
         #endregion Public Properties
 
@@ -32,13 +35,25 @@ namespace Assets.Systems.UISystem
         {
             RegisterComponent(component as UiTriggerComponent);
             RegisterComponent(component as UISystemConfig);
+            RegisterComponent(component as HealthComponent);
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
+        private void RegisterComponent(HealthComponent health)
+        {
+            if (health && health.tag == "Player")
+            {
+                health.CurrentHealth
+                    .Skip(1)
+                    .Subscribe(f => _config.HealthText.text = f.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
         private void RegisterComponent(UISystemConfig config)
+
         {
             if (!config) return;
             _config = config;
