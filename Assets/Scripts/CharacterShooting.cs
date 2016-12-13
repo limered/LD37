@@ -10,13 +10,15 @@ namespace Assets.Scripts
 
             Debug.DrawRay(transform.position, transform.forward * 5, Color.green);
 
-            if (KeyCode.Mouse0.WasReleased())
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, transform.forward, out hit))
+                var wall = hit.collider.GetComponent<RoomRotationWallComponent>();
+                if (wall)
                 {
-                    var wall = hit.collider.GetComponent<RoomRotationWallComponent>();
-                    if (wall)
+                    wall.ResetWallmarks();
+                    wall.Mark();
+                    if (KeyCode.Mouse0.WasReleased())
                     {
                         wall.RotateToThis();
                     }

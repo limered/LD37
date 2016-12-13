@@ -3,6 +3,7 @@ using Assets.Systems.GameControl.Components;
 using Assets.Systems.LightControl.Components;
 using System;
 using System.Collections.Generic;
+using Assets.Systems.Lightshow.Events;
 using UniRx;
 
 namespace Assets.Systems.LightControl
@@ -31,6 +32,9 @@ namespace Assets.Systems.LightControl
 
         public void Init()
         {
+            MessageBroker.Default.Receive<AlarmEventArgs>().Subscribe(args=>_helper.Alarm(args));
+            MessageBroker.Default.Receive<FlickerEventArgs>().Subscribe(args => _helper.Flicker(args));
+            MessageBroker.Default.Receive<ChristmasEventArgs>().Subscribe(args => _helper.Christmas(args));
         }
 
         public void RegisterComponent(IGameComponent component)
@@ -77,7 +81,8 @@ namespace Assets.Systems.LightControl
 
         private void SwitchToSingle(GameMode mode)
         {
-            _helper.GoToMode(LightMode.Single);
+            if(_helper)
+                _helper.GoToMode(LightMode.Single);
         }
 
         #endregion Private Methods

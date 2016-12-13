@@ -15,6 +15,8 @@ namespace Assets.Systems.RoomRotationSystem
         private const float DeltaDistance = 5f;
         private float _speed = 300;
 
+        private List<MeshRenderer> _wallPlanes = new List<MeshRenderer>();
+
         public int Priority
         {
             get { return 2; }
@@ -55,7 +57,22 @@ namespace Assets.Systems.RoomRotationSystem
 
         private void RegisterComponent(RoomRotationWallComponent comp)
         {
-            if(comp) comp.OnRotationRequested += OnRotationRequested;
+            if (comp)
+            {
+                var child = comp.transform.GetChild(0);
+                var meshRenderer = child.GetComponent<MeshRenderer>();
+                _wallPlanes.Add(meshRenderer);
+                comp.OnRotationRequested += OnRotationRequested;
+                comp.OnResetWallMarks += ResetWallMarks;
+            }
+        }
+
+        private void ResetWallMarks()
+        {
+            foreach (var meshRenderer in _wallPlanes)
+            {
+                meshRenderer.enabled = false;
+            }
         }
 
         private void RegisterComponent(RotatableRoomComponent comp)
@@ -82,7 +99,6 @@ namespace Assets.Systems.RoomRotationSystem
                     .Subscribe(_ => _room.transform.localRotation = Quaternion.identity);
             }
         }
-
 
         private void OnRotationRequested(RoomRotationWallComponent comp)
         {

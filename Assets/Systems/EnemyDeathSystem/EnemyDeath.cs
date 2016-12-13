@@ -11,6 +11,7 @@ namespace Assets.Systems.EnemyDeathSystem
     {
         private float _fallThreshold;
         public int Priority { get { return 2; } }
+        private string _wallTag = "World";
 
         public List<Type> SystemComponents
         {
@@ -43,14 +44,18 @@ namespace Assets.Systems.EnemyDeathSystem
             {
                 comp
                     .OnTriggerEnterAsObservable()
-                    .Where(coll => CheckForDeath(comp))
+                    .Where(coll => CheckForDeath(comp, coll))
                     .Subscribe(coll => Die(comp))
                     .AddTo(comp);
             }
         }
 
-        private bool CheckForDeath(DieOnFallComponent comp)
+        private bool CheckForDeath(DieOnFallComponent comp, Collider coll)
         {
+            if (coll.tag != _wallTag)
+            {
+                return false;
+            }
             var rigid = comp.GetComponent<Rigidbody>();
             return rigid.velocity.y < _fallThreshold;
         }

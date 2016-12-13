@@ -1,4 +1,6 @@
-﻿namespace Assets.Systems.RoomRotationSystem.Components
+﻿using UnityEngine;
+
+namespace Assets.Systems.RoomRotationSystem.Components
 {
     public class RoomRotationWallComponent : GameComponent
     {
@@ -11,6 +13,24 @@
             {
                 OnRotationRequested(this);
             }
+        }
+
+        public delegate void ResetWallMarks();
+        public event ResetWallMarks OnResetWallMarks;
+
+        public void ResetWallmarks()
+        {
+            if (OnResetWallMarks != null)
+            {
+                OnResetWallMarks();
+            }
+        }
+
+        public void Mark()
+        {
+            var child = transform.GetChild(0);
+            var meshRenderer = child.GetComponent<MeshRenderer>();
+            meshRenderer.enabled = true;
         }
     }
 }

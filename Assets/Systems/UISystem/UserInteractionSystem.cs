@@ -1,4 +1,5 @@
 ﻿using Assets.Systems.GameControl;
+using Assets.Systems.GameControl.Components;
 using Assets.Systems.HealthSystem.Components;
 using Assets.Systems.Point;
 using Assets.Systems.UISystem.Components;
@@ -42,12 +43,13 @@ namespace Assets.Systems.UISystem
 
         public void Init()
         {
+            MessageBroker.Default.Receive<FlashArgs>().Subscribe(_ => _config.FlashImage());
         }
 
         public void RegisterComponent(IGameComponent component)
         {
-            RegisterComponent(component as UiTriggerComponent);
             RegisterComponent(component as UISystemConfig);
+            RegisterComponent(component as UiTriggerComponent);
             RegisterComponent(component as HealthComponent);
             RegisterComponent(component as PointsHelper);
         }
@@ -71,6 +73,7 @@ namespace Assets.Systems.UISystem
             if (helper)
             {
                 helper.Points
+                    .Skip(1)
                     .Subscribe(f => _config.PointsText.text = Math.Floor(f).ToString(CultureInfo.InvariantCulture));
             }
         }
@@ -98,9 +101,14 @@ namespace Assets.Systems.UISystem
         private void ToggleUseMessage(bool isOn)
         {
             if (GameControlSystem.GameMode == GameMode.StartSequence)
-                _config.StartCanvas.enabled = isOn;
-            if (GameControlSystem.GameMode == GameMode.End)
-                _config.EndCanvas.enabled = isOn;
+            { _config.StartCanvas.enabled = isOn; }
+            else if (GameControlSystem.GameMode == GameMode.End)
+            { _config.EndCanvas.enabled = isOn; }
+            else if (GameControlSystem.GameMode == GameMode.Running)
+            {
+                _config.EndCanvas.enabled = false;
+                _config.StartCanvas.enabled = false;
+            }
         }
 
         #endregion Private Methods

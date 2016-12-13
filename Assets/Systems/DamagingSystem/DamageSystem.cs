@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Systems.DamagingSystem.Components;
 using Assets.Systems.HealthSystem.Components;
+using Assets.Systems.UISystem;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -27,7 +28,6 @@ namespace Assets.Systems.DamagingSystem
                     .Where(CanDealDamage)
                     .Subscribe(coll => DealDamage(comp, coll))
                     .AddTo(comp);
-
             }
         }
 
@@ -40,6 +40,14 @@ namespace Assets.Systems.DamagingSystem
         {
             var health = coll.gameObject.GetComponent<HealthComponent>();
             health.CurrentHealth.Value -= self.DamageToHealth;
+
+            var body = self.GetComponent<Rigidbody>();
+            var direction = self.transform.position - coll.gameObject.transform.position;
+            direction = direction.normalized;
+            direction *= self.PushForceStrength;
+            body.AddForce(direction);
+
+            MessageBroker.Default.Publish(new FlashArgs());
         }
     }
 }

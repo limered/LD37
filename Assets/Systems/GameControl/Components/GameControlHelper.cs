@@ -8,6 +8,7 @@ namespace Assets.Systems.GameControl.Components
         public ReactiveProperty<GameMode> GameMode = new ReactiveProperty<GameMode>();
 
         public GameObject Statge0;
+        public StageComponent StartStage;
 
         public void CloseGame()
         {
