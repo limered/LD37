@@ -135,7 +135,8 @@ namespace Assets.Systems.LightControl.Components
         {
             for (var i = 0; i < duration; i++)
             {
-                //var nr = (int)(UnityEngine.Random.value * MainLights.Count);
+                if(nr > 4)
+                    nr = (int)(UnityEngine.Random.value * MainLights.Count);
 
                 var curr = MainLights[nr];
                 if (curr.intensity < LightIntensity) curr.intensity = LightIntensity;

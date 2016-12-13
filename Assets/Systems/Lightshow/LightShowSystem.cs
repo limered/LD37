@@ -38,13 +38,13 @@ namespace Assets.Systems.Lightshow
                 if (useEffect < 0.005)
                 {
                     var whitch = Random.value;
-                    if (whitch < 0.3)
+                    if (whitch < 0.333)
                     {
                         var duration = ((int)Random.value * 300) + 60;
-                        var lightNr = (int) (Random.value*5);
+                        var lightNr = (int) (Random.value*8);
                         MessageBroker.Default.Publish(new ChristmasEventArgs { Duration = duration, Nr = lightNr });
                     }
-                    else if (whitch < 0.6)
+                    else if (whitch < 0.666)
                     {
                         var off = ((int)Random.value * 20) + 5;
                         var on = ((int)Random.value * 60) + 5;
