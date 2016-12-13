@@ -15,6 +15,7 @@ using Assets.Systems.LightControl;
 using Assets.Systems.Lightshow;
 using Assets.Systems.Music;
 using Assets.Systems.Point;
+using Assets.Systems.SaveThePlayer;
 using Assets.Systems.UISystem;
 using UnityEngine;
 
@@ -65,6 +66,7 @@ namespace Assets.Systems.Game
             RegisterSystem(new ButtonAnimationSystem());
             RegisterSystem(new MusicSystem());
             RegisterSystem(new LightShowSystem());
+            RegisterSystem(new TeleportSystem());
 
             #endregion System Registration
 
