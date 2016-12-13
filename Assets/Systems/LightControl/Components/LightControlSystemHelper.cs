@@ -107,6 +107,8 @@ namespace Assets.Systems.LightControl.Components
                 MainLights.ForEach(currLight => currLight.intensity = (float)(LightIntensity / single * i));
                 yield return null;
             }
+
+            MainLights.ForEach(currLight => currLight.intensity = LightIntensity);
         }
         private IEnumerator FlickerLights(int off, int on)
         {
@@ -130,6 +132,12 @@ namespace Assets.Systems.LightControl.Components
                 MainLights.ForEach(currLight => currLight.intensity = (float)(LightIntensity / (on/2) * i));
                 yield return null;
             }
+            for (var i = 0; i < (on + off); i++)
+            {
+                yield return null;
+            }
+
+            MainLights.ForEach(currLight => currLight.intensity = LightIntensity);
         }
         private IEnumerator ChristLights(int duration, int nr)
         {
