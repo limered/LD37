@@ -35,7 +35,7 @@ namespace Assets.Systems.Lightshow
             if (GameControlSystem.GameMode == GameMode.Running)
             {
                 var useEffect = Random.value;
-                if (useEffect < 0.005)
+                if (useEffect < 0.001)
                 {
                     var whitch = Random.value;
                     if (whitch < 0.333)
