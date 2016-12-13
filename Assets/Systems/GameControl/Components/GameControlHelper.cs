@@ -9,6 +9,7 @@ namespace Assets.Systems.GameControl.Components
 
         public GameObject Statge0;
         public StageComponent StartStage;
+        public bool StartSpawner = true;
 
         public void CloseGame()
         {

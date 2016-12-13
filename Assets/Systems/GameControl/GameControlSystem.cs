@@ -123,8 +123,11 @@ namespace Assets.Systems.GameControl
 
             GameMode = GameMode.Running;
             _helper.GameMode.Value = GameMode;
-            ChangeSpawnerState(_helper.StartStage.gameObject, true);
-            _helper.StartStage.IsActive = true;
+            if (_helper.StartSpawner)
+            {
+                ChangeSpawnerState(_helper.StartStage.gameObject, true);
+                _helper.StartStage.IsActive = true;
+            }
         }
 
         private void ChangeSpawnerState(GameObject parent, bool state)
