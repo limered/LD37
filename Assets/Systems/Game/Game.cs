@@ -12,6 +12,7 @@ using Assets.Systems.GameCommands;
 using Assets.Systems.GameControl;
 using Assets.Systems.HealthSystem;
 using Assets.Systems.LightControl;
+using Assets.Systems.Lightshow;
 using Assets.Systems.Music;
 using Assets.Systems.Point;
 using Assets.Systems.UISystem;
@@ -63,6 +64,7 @@ namespace Assets.Systems.Game
             RegisterSystem(new PointsSystem());
             RegisterSystem(new ButtonAnimationSystem());
             RegisterSystem(new MusicSystem());
+            RegisterSystem(new LightShowSystem());
 
             #endregion System Registration
 
