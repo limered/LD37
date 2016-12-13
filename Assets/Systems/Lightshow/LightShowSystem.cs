@@ -41,7 +41,7 @@ namespace Assets.Systems.Lightshow
                     if (whitch < 0.333)
                     {
                         var duration = ((int)Random.value * 300) + 60;
-                        var lightNr = (int) (Random.value*8);
+                        var lightNr = (int) (Random.value*7);
                         MessageBroker.Default.Publish(new ChristmasEventArgs { Duration = duration, Nr = lightNr });
                     }
                     else if (whitch < 0.666)
